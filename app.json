@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Buildoo",
-    "slug": "Buildoo",
+    "slug": "buildoo",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.himanshu7830.buildoo"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "9b50daba-79b9-4c4d-a787-55ae71f82942"
+      }
+    },
+    "owner": "himanshu7830"
   }
 }
