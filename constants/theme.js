@@ -1,3 +1,4 @@
+import { Platform } from "react-native";
 import { Dimensions } from "react-native";
 const { height,width } = Dimensions.get('window');
 
@@ -5,8 +6,8 @@ const COLORS = {
     primary: "#00a551",
     secondary: "#deede6",
     tertiary: "",
-
-    green:"",
+    yellow: "#FFA113",
+    green:"#129552",
     green2: "#00a551",
 
     offwhite: "#F3F4F8",
@@ -25,7 +26,8 @@ const SIZES = {
     xLarge:24,
     xxLarge:44,
     height,
-    width
+    width,
+    pageHeightNav: Platform.OS === "ios" ? "90%" : "92%" 
 }
 
 const SHADOWS = {

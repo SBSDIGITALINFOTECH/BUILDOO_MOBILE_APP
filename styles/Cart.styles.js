@@ -10,15 +10,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "flex-end",
     alignItems: "center",
-    // position: "absolute",
     paddingVertical: SIZES.medium,
     width: SIZES.width,
     backgroundColor: COLORS.lightWhite,
     paddingHorizontal: 20,
-    // shadowOffset: { width: 0, height: 2 },
-    // shadowColor: "black",
-    // shadowOpacity: 0.2,
-    // elevation: 10,
   },
   subContainer: {},
   heading: {
@@ -36,9 +31,13 @@ const styles = StyleSheet.create({
   },
   subcard1: {
     width: "30%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   image: {
     width: "100%",
+    maxWidth: 140,
+    maxHeight: 140,
     aspectRatio: 1,
     resizeMode: "cover",
   },
@@ -115,6 +114,7 @@ const styles = StyleSheet.create({
   increIcon: {
     padding: 5,
     borderRadius: 50,
+    overflow: "hidden",
     alignItems: "center",
     justifyContent: "center",
     display: "flex",
@@ -129,9 +129,9 @@ const styles = StyleSheet.create({
   bottomContainer: {
     flex: 1,
     position: "absolute",
-    bottom: SIZES.xxLarge + 15,
     paddingBottom: 5,
     paddingTop: 10,
+    height: 120,
     backgroundColor: "white",
   },
 
@@ -143,10 +143,11 @@ const styles = StyleSheet.create({
   },
   ttl: {
     fontSize: SIZES.medium,
+    fontFamily: "semibold",
   },
   amm: {
     fontSize: SIZES.large,
-    fontWeight: "bold",
+    fontFamily: "bold",
   },
 });
 

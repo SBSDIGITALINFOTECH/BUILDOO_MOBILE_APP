@@ -3,28 +3,21 @@ import { COLORS, SIZES } from "../../../constants";
 
 export default styles = StyleSheet.create({
   card: {
-    flexDirection: "row",
+    width: "50%",
+    paddingHorizontal: 10,
     alignItems: "center",
-    backgroundColor: COLORS.white,
-    borderRadius: SIZES.small,
-    justifyContent: "space-between",
-    marginBottom: 10,
-    overflow: "hidden",
-    position: "relative",
+    marginTop: SIZES.medium,
   },
   image: {
-    width: "40%",
-    maxHeight: 120,
-    aspectRatio: 1,
+    width: "100%",
+    aspectRatio: "1",
+    borderRadius: 100,
     resizeMode: "cover",
   },
-  details: {
-    alignContent: "center",
-    marginStart: 20,
-  },
+
   catName: {
-    fontFamily: "bold",
-    fontSize: SIZES.large,
-    textTransform: 'capitalize'
+    fontFamily: "semibold",
+    fontSize: SIZES.medium + 2,
+    marginTop: 10,
   },
 });

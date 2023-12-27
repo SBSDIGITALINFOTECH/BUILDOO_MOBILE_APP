@@ -25,7 +25,7 @@ const styles = StyleSheet.create({
         marginTop: -SIZES.large,
         marginBottom: SIZES.xxLarge +20,
         backgroundColor: COLORS.lightWhite,
-        width: SIZES.width,
+        width: '100%',
         borderTopLeftRadius: SIZES.medium,
         borderTopRightRadius: SIZES.medium
     },

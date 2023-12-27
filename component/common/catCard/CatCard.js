@@ -10,19 +10,19 @@ const CatCard = ({ item }) => {
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => navigation.navigate("ProductDetails")}
+      onPress={() => navigation.navigate("search")}
+      style={styles.card}
     >
-      <View style={styles.card}>
-        <View style={styles.details}>
-          <Text style={styles.catName}>Steel Bars</Text>
-        </View>
-        <Image
-          source={{
-            uri: "https://buildoo.co.in/files/categoryImage/BQZl5ZpJiU2p6y3OoJ9mFw.png",
-          }}
-          style={styles.image}
-        />
-      </View>
+      <Image
+        source={{
+          uri:
+            item.categoryImagePath != ""
+              ? item.categoryImagePath
+              : "https://www.deveninfotech.com/wp-content/themes/consultix/images/no-image-found-360x250.png",
+        }}
+        style={styles.image}
+      />
+      <Text style={styles.catName}>{item.categoryName}</Text>
     </TouchableOpacity>
   );
 };

@@ -32,37 +32,38 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: SIZES.medium,
   },
-  scrollarea:{
-    marginHorizontal: SIZES.medium
+  scrollarea: {
+    marginHorizontal: SIZES.medium,
   },
-  title:{
+  title: {
     marginTop: SIZES.large,
-    fontSize:SIZES.medium+2,
-    fontWeight: '500'
+    fontSize: SIZES.medium + 2,
+    fontFamily: 'semibold'
   },
-  card:{
-    width: '100%',
+  card: {
+    width: "100%",
     paddingHorizontal: SIZES.large,
-    paddingVertical:SIZES.medium,
+    paddingVertical: SIZES.medium,
     backgroundColor: COLORS.white,
     borderRadius: 10,
     marginTop: SIZES.medium,
-    elevation:5,
+    elevation: 5,
   },
-  row:{
-    display:"flex",
+  row: {
+    display: "flex",
     flexDirection: "row",
     justifyContent: "space-between",
-    marginBottom: SIZES.medium
+    marginBottom: SIZES.medium,
   },
-  textName:{
-    fontWeight: '400',
+  textName: {
+    fontFamily:'semibold'
   },
-  text2:{
-    color: "red"
+  text2: {
+    color: "red",
+    fontFamily:'semibold'
   },
-  text:{
-
+  text: {
+    fontFamily:'regular'
   },
   bottomContainer: {
     flex: 1,
@@ -75,22 +76,47 @@ const styles = StyleSheet.create({
 
   sec: {
     marginHorizontal: SIZES.medium,
-    marginVertical:SIZES.small-7,
+    marginVertical: SIZES.small - 7,
     paddingHorizontal: SIZES.small,
     flexDirection: "row",
     justifyContent: "space-between",
   },
   ttl: {
     fontSize: SIZES.medium,
-    color: 'gray'
+    fontFamily: 'semibold',
+    color: "gray",
   },
   amm: {
     fontSize: SIZES.medium,
-    fontWeight: "bold",
+    fontFamily: 'bold'
   },
-  bottomsheet:{
-    marginHorizontal: SIZES.medium
-  }
+  bottomsheet: {
+    marginHorizontal: SIZES.medium,
+  },
+  bottomsheetTop: {
+    borderBottomWidth: 1,
+    borderColor: "black",
+    paddingBottom: SIZES.small,
+    marginHorizontal: -SIZES.medium,
+    display: "flex",
+    flexDirection: "row",
+  },
+  closebtn: {
+    marginLeft: SIZES.medium,
+    fontWeight: "600",
+  },
+  heading: {
+    fontSize: SIZES.large - 2,
+    fontFamily: 'semibold',
+    marginLeft: SIZES.medium + 2,
+  },
+  more: {
+    textAlign: "left",
+    marginLeft: SIZES.xLarge+8,
+    fontSize: SIZES.medium - 1,
+    fontFamily: 'semibold',
+    color: COLORS.green,
+  },
 });
 
 export default styles;

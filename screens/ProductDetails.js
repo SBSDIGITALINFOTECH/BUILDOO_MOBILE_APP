@@ -6,17 +6,23 @@ import {
   TouchableOpacity,
   SafeAreaView,
   View,
+  useWindowDimensions,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styles from "../styles/ProductDetails.styles";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { Rating } from "react-native-ratings";
 import ProductRow from "../component/common/products/ProductRow";
 import Headings from "../component/common/Headings/Headings";
+import { getProductDetailsbyID } from "../config/API";
+import HTML from 'react-native-render-html';
 
-const ProductDetails = ({ navigation }) => {
+const ProductDetails = ({route , navigation }) => {
+  const { width } = useWindowDimensions();
   const [count, setCount] = useState(1);
+  const [productDetails, setProductDetails] = useState();
+  const { productId } = route.params;
 
   const hendleCountPlus = () => {
     return setCount(count + 1);
@@ -26,6 +32,20 @@ const ProductDetails = ({ navigation }) => {
       return setCount(count - 1);
     }
   };
+
+  const onLoad = () => {
+    getProductDetailsbyID(productId).then((res) => {
+      if (res.data.success) {
+        setProductDetails(res.data.data[0]);
+      }else{
+        setProductDetails({});
+      }
+    });
+  };
+  useEffect(()=>{
+    onLoad();
+  },[])
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -51,19 +71,19 @@ const ProductDetails = ({ navigation }) => {
         </View>
         <Image
           source={{
-            uri: "https://buildoo.co.in/files/productImage/YWo5qHVucUmsLiVBGPsivA.png",
+            uri: productDetails?.image ? productDetails?.image: "https://buildoo.co.in/files/productImage/YWo5qHVucUmsLiVBGPsivA.png",
           }}
           style={styles.image}
         />
 
         <View style={styles.details}>
           <View style={styles.titleRow}>
-            <View>
-              <Text style={styles.title}>Product</Text>
-              <Text style={styles.subtitle}>By Himanshu</Text>
+            <View style={{width:'80%'}}>
+              <Text style={styles.title}>{productDetails?.im.productName}</Text>
+              <Text style={styles.subtitle}>By {productDetails?.storeName}</Text>
             </View>
             <View style={styles.priceWrapper}>
-              <Text style={styles.price}>₹ 600.00</Text>
+              <Text style={styles.price}>₹ {productDetails?.im.specialPrice}</Text>
             </View>
           </View>
           <View style={styles.reviewContainer}>
@@ -99,16 +119,7 @@ const ProductDetails = ({ navigation }) => {
           <View style={styles.descriptionWrapper}>
             <Text style={styles.description}>Description</Text>
             <Text style={styles.descText}>
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry's standard dummy text
-              ever since the 1500s, when an unknown printer took a galley of
-              type and scrambled it to make a type specimen book. It has
-              survived not only five centuries, but also the leap into
-              electronic typesetting, remaining essentially unchanged. It was
-              popularised in the 1960s with the release of Letraset sheets
-              containing Lorem Ipsum passages, and more recently with desktop
-              publishing software like Aldus PageMaker including versions of
-              Lorem Ipsum.
+            <HTML contentWidth={width} source={{ html: productDetails ? productDetails?.im.description : '<p>No description</p>' }} />
             </Text>
           </View>
           <Headings title="You May Like" />

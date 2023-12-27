@@ -51,16 +51,6 @@ const Favourite = ({ navigation }) => {
   ];
   return (
     <SafeAreaView style={styles.container}>
-      {/* <View style={styles.upperRow}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-        >
-          <Ionicons name="chevron-back-circle" size={30} color={COLORS.black} />
-        </TouchableOpacity>
-        <Text style={styles.headerText}>Favourites</Text>
-      </View> */}
       <View style={styles.upperRow}>
         <TouchableOpacity
           onPress={() => {
@@ -77,19 +67,21 @@ const Favourite = ({ navigation }) => {
           <Ionicons name="search" size={25} color={COLORS.black} />
         </TouchableOpacity>
       </View>
-      <View style={styles.subContainer}>
+      <View>
         <Text style={styles.heading}>Favourites</Text>
-        <FlatList
-          refreshing={false}
-          onRefresh={() => {}}
-          showsVerticalScrollIndicator={false}
-          data={SearchResult}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => <VerticleCard item={item} />}
-          style={[{ marginHorizontal: SIZES.medium, marginTop: SIZES.xLarge + 10 },Platform.OS === "ios" ? {marginBottom: SIZES.large+100}: null ]}
-        />
       </View>
-      </SafeAreaView>
+      <FlatList
+        refreshing={false}
+        onRefresh={() => {}}
+        showsVerticalScrollIndicator={false}
+        data={SearchResult}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => <VerticleCard item={item} />}
+        style={[
+          { marginHorizontal: SIZES.medium, marginTop: SIZES.xLarge + 10 },
+        ]}
+      />
+    </SafeAreaView>
   );
 };
 

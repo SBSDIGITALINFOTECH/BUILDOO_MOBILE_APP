@@ -1,4 +1,12 @@
-import { Image, SafeAreaView, StyleSheet, Text, View } from "react-native";
+import {
+  Image,
+  Platform,
+  SafeAreaView,
+  StatusBar,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import React, { useRef } from "react";
 import { TouchableOpacity } from "react-native";
 import {
@@ -59,32 +67,32 @@ function Cart({ navigation }) {
           <Ionicons name="search" size={25} color={COLORS.black} />
         </TouchableOpacity>
       </View>
-      <SafeAreaView style={styles.subContainer}>
+      <View style={styles.subContainer}>
         <Text style={styles.heading}>Cart</Text>
-        <FlatList
-          showsVerticalScrollIndicator={false}
-          data={DATA}
-          keyExtractor={(item) => item.id}
-          renderItem={({ item }) => (
-            <Item title={item.title} navigation={navigation} path={item.path} />
-          )}
-          style={{
-            // marginTop: SIZES.large,
-            marginHorizontal: SIZES.medium,
-            marginBottom: SIZES.xxLarge + 240,
-          }}
-        />
-      </SafeAreaView>
-      <View style={styles.bottomContainer}>
+      </View>
+      <FlatList
+        showsVerticalScrollIndicator={false}
+        data={DATA}
+        keyExtractor={(item) => item.id}
+        renderItem={({ item }) => (
+          <Item title={item.title} navigation={navigation} path={item.path} />
+        )}
+        style={{
+          marginTop: SIZES.large,
+          marginHorizontal: SIZES.medium,
+          marginBottom: 100,
+        }}
+      />
+      <View style={{ ...styles.bottomContainer, bottom: 0 }}>
         <View style={styles.sec}>
           <Text style={styles.ttl}>Total amount:</Text>
           <Text style={styles.amm}>₹ 124.00</Text>
         </View>
         <Button
           title="CHECK OUT"
-          titleStyle={{ fontWeight: "700" }}
+          titleStyle={{ fontFamily: "bold" }}
           buttonStyle={{
-            backgroundColor: "green",
+            backgroundColor: COLORS.green2,
             borderColor: "transparent",
             borderWidth: 0,
             paddingVertical: SIZES.small,
@@ -95,9 +103,14 @@ function Cart({ navigation }) {
             paddingHorizontal: SIZES.medium,
             marginVertical: 10,
           }}
-          onPress={() =>navigation.navigate("checkout")}
+          onPress={() => navigation.navigate("checkout")}
         />
       </View>
+      <StatusBar
+          backgroundColor={COLORS.lightWhite}
+          barStyle="dark-content"
+          style={COLORS.black}
+        />
     </SafeAreaView>
   );
 }
