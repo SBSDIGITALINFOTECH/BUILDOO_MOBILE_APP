@@ -43,12 +43,12 @@ const Navigation = () => {
         <Stack.Screen
           name="search"
           component={Search}
-          options={{ headerShown: false }}
+          options={{ headerShown: false,animation:'fade_from_bottom' }}
         />
         <Stack.Screen
           name="ProductDetails"
           component={ProductDetails}
-          options={{ headerShown: false,animation:'slide_from_right' }}
+          options={{ headerShown: false,animation:'fade' }}
         />
         <Stack.Screen
           name="Favourite"
@@ -84,7 +84,7 @@ const Navigation = () => {
           name="Login"
           component={Login}
           options={{
-            headerShown: false,
+            headerShown: false,animation:'fade'
           }}
         />
         <Stack.Screen

@@ -4,20 +4,23 @@ import { COLORS, SIZES } from "../../../constants";
 const styles = StyleSheet.create({
   container: {
     width: 182,
-    height: 300,
+    height: 250,
     marginEnd: 2,
     borderRadius: SIZES.large - 10,
 
     backgroundColor: COLORS.white,
   },
   imageContainer: {
-    width: 170,
+    display:'flex',
+    // backgroundColor:'red',
+    alignItems:'center',
     marginLeft: SIZES.small / 2,
     marginRight: SIZES.small / 2,
     borderRadius: SIZES.small,
     overflow: "hidden",
   },
   image: {
+    width: 120,
     aspectRatio: 1,
     resizeMode: "cover",
   },
@@ -27,14 +30,20 @@ const styles = StyleSheet.create({
   category: {
     fontFamily: "regular",
     fontSize: SIZES.small + 1,
+    marginVertical:0,
+    paddingVertical:0
   },
   title: {
     fontFamily: "bold",
     fontSize: SIZES.medium - 2,
+    marginVertical:0,
+    paddingVertical:0
   },
   price: {
     fontFamily: "semibold",
     fontSize: SIZES.medium + 2,
+    marginVertical:0,
+    paddingVertical:0
   },
   sprice: {
     color: "red",

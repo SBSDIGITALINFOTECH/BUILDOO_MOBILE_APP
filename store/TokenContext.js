@@ -9,6 +9,7 @@ const TokenContext = createContext();
 const TokenProvider = ({ children }) => {
   const [guestID,setGuestID] = useState('');
   const [token, setToken] = useState('');
+  const [loader,setLoader] = useState(false);
 
   const onLoad =async()=>{
     const tokenn = await AsyncStorage.getItem('token');
@@ -48,8 +49,15 @@ const TokenProvider = ({ children }) => {
     })
   };
 
+  const openLoader=()=>{
+    setLoader(true);
+  }
+  const closeLoader=()=>{
+    setLoader(false);
+  }
+
   return (
-    <TokenContext.Provider value={{ token, addToken, removeToken,guestID,setGuestID }}>
+    <TokenContext.Provider value={{ token, addToken, removeToken,guestID,loader,openLoader,closeLoader,setGuestID }}>
       {children}
     </TokenContext.Provider>
   );

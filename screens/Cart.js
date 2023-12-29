@@ -7,7 +7,7 @@ import {
   Text,
   View,
 } from "react-native";
-import React, { useRef } from "react";
+import React, { useContext, useEffect, useRef } from "react";
 import { TouchableOpacity } from "react-native";
 import {
   AntDesign,
@@ -22,112 +22,199 @@ import styles from "../styles/Cart.styles";
 import { FlatList } from "react-native";
 import { useState } from "react";
 import { Button } from "@rneui/themed";
-function Cart({ navigation }) {
-  const DATA = [
-    {
-      id: 1,
-      title: "My Orders",
-      path: "Orders",
-    },
-    {
-      id: 2,
-      title: "Favourites",
-      path: "Favourite",
-    },
-    {
-      id: 3,
-      title: "Shipping addresses",
-      path: "Addresses",
-    },
-    {
-      id: 4,
-      title: "Settings",
-      path: "Settings",
-    },
-    {
-      id: 5,
-      title: "Shipping addresses",
-      path: "Addresses",
-    },
-    {
-      id: 6,
-      title: "Settings",
-      path: "Settings",
-    },
-  ];
+import {
+  deleteproductfromCart,
+  modifyQty,
+  viewCartDetails,
+} from "../config/API";
+import { TokenContext } from "../store/TokenContext";
+import { useFocusEffect } from "@react-navigation/native";
+import ImptyCartImage from "../assets/emptyCart.png";
+import Loader from "../component/common/loader/Loader";
+
+function Cart({ route, navigation }) {
+  const { token, guestID, loader, openLoader, closeLoader } =
+    useContext(TokenContext);
+  const [list, setList] = useState(null);
+  const [list2, setList2] = useState([]);
+
+  const fetchCartData = () => {
+    console.log(guestID);
+    openLoader();
+    viewCartDetails(guestID)
+      .then((res) => {
+        if (res.data.success) {
+          setList(res.data.data2);
+          setList2(res.data.data);
+        } else {
+          setList([]);
+          setList2([]);
+        }
+      })
+      .catch((err) => {})
+      .finally(() => {
+        closeLoader();
+      });
+  };
+
+  useFocusEffect(
+    React.useCallback(() => {
+      // This function will be called every time the screen is focused
+      fetchCartData();
+    }, [])
+  );
 
   return (
     <SafeAreaView style={styles.container}>
-      <View style={styles.upperRow}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.navigate("search");
-          }}
-        >
-          <Ionicons name="search" size={25} color={COLORS.black} />
-        </TouchableOpacity>
-      </View>
-      <View style={styles.subContainer}>
-        <Text style={styles.heading}>Cart</Text>
-      </View>
-      <FlatList
-        showsVerticalScrollIndicator={false}
-        data={DATA}
-        keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <Item title={item.title} navigation={navigation} path={item.path} />
-        )}
-        style={{
-          marginTop: SIZES.large,
-          marginHorizontal: SIZES.medium,
-          marginBottom: 100,
-        }}
-      />
-      <View style={{ ...styles.bottomContainer, bottom: 0 }}>
-        <View style={styles.sec}>
-          <Text style={styles.ttl}>Total amount:</Text>
-          <Text style={styles.amm}>₹ 124.00</Text>
-        </View>
-        <Button
-          title="CHECK OUT"
-          titleStyle={{ fontFamily: "bold" }}
-          buttonStyle={{
-            backgroundColor: COLORS.green2,
-            borderColor: "transparent",
-            borderWidth: 0,
-            paddingVertical: SIZES.small,
-            borderRadius: 30,
-          }}
-          containerStyle={{
-            width: SIZES.width,
-            paddingHorizontal: SIZES.medium,
-            marginVertical: 10,
-          }}
-          onPress={() => navigation.navigate("checkout")}
-        />
-      </View>
+      {loader ? (
+        <Loader />
+      ) : (
+        <>
+          <View style={styles.upperRow}>
+            <TouchableOpacity
+              onPress={() => {
+                navigation.navigate("search");
+              }}
+            >
+              <Ionicons name="search" size={25} color={COLORS.black} />
+            </TouchableOpacity>
+          </View>
+          <View style={styles.subContainer}>
+            <Text style={styles.heading}>Cart</Text>
+          </View>
+          { list2.length ? (
+            <>
+              <FlatList
+                showsVerticalScrollIndicator={false}
+                data={list2}
+                keyExtractor={(item) => item.productId}
+                renderItem={({ item }) => (
+                  <Item
+                    item={item}
+                    navigation={navigation}
+                    fetchCartData={fetchCartData}
+                  />
+                )}
+                style={{
+                  marginTop: SIZES.large,
+                  marginHorizontal: SIZES.medium,
+                  marginBottom: 100,
+                }}
+              />
+              <View style={{ ...styles.bottomContainer, bottom: 0 }}>
+                <View style={styles.sec}>
+                  <Text style={styles.ttl}>Total amount:</Text>
+                  <Text style={styles.amm}>₹ {list?.alltotal}</Text>
+                </View>
+                <Button
+                  title="CHECK OUT"
+                  titleStyle={{ fontFamily: "bold" }}
+                  buttonStyle={{
+                    backgroundColor: COLORS.green2,
+                    borderColor: "transparent",
+                    borderWidth: 0,
+                    paddingVertical: SIZES.small,
+                    borderRadius: 30,
+                  }}
+                  containerStyle={{
+                    width: SIZES.width,
+                    paddingHorizontal: SIZES.medium,
+                    marginVertical: 10,
+                  }}
+                  onPress={() => navigation.navigate("checkout")}
+                />
+              </View>
+            </>
+          ) : (
+            <View style={{ flex: 1 }}>
+              <Image
+                style={{ width: SIZES.width, height: SIZES.width }}
+                source={ImptyCartImage}
+              />
+              <Text
+                style={{
+                  fontFamily: "bold",
+                  fontSize: SIZES.xLarge,
+                  textAlign: "center",
+                }}
+              >
+                Your Cart is <Text style={{ color: "red" }}>Empty</Text>
+              </Text>
+              <View style={{ ...styles.bottomContainerEmpty, bottom: 0 }}>
+                <Button
+                  title="Browse Products"
+                  titleStyle={{ fontFamily: "bold" }}
+                  buttonStyle={{
+                    backgroundColor: "#008b76",
+                    borderColor: "transparent",
+                    borderWidth: 0,
+                    paddingVertical: SIZES.small,
+                    borderRadius: 30,
+                  }}
+                  containerStyle={{
+                    width: SIZES.width,
+                    paddingHorizontal: SIZES.medium,
+                    marginVertical: 20,
+                  }}
+                  onPress={() => navigation.navigate("Home")}
+                />
+              </View>
+            </View>
+          )}
+        </>
+      )}
       <StatusBar
-          backgroundColor={COLORS.lightWhite}
-          barStyle="dark-content"
-          style={COLORS.black}
-        />
+        backgroundColor={COLORS.lightWhite}
+        barStyle="dark-content"
+        style={COLORS.black}
+      />
     </SafeAreaView>
   );
 }
 
-const Item = ({ title }) => {
-  const [count, setCount] = useState(1);
+const Item = ({ navigation, item, fetchCartData }) => {
+  const { token, guestID } = useContext(TokenContext);
   const [active, setActive] = useState(false);
   const hendleCountMinus = () => {
-    if (count > 1) {
-      setCount(count - 1);
-    }
+    const data = {
+      guestId: guestID,
+      modifyType: "minus",
+      productId: item.productId,
+    };
+    modifyQty(data)
+      .then((res) => {
+        if (res.data.success) {
+          fetchCartData();
+        } else {
+        }
+      })
+      .catch((err) => {});
   };
   const hendleCountPlus = () => {
-    setCount(count + 1);
+    const data = {
+      guestId: guestID,
+      modifyType: "add",
+      productId: item.productId,
+    };
+    modifyQty(data)
+      .then((res) => {
+        if (res.data.success) {
+          fetchCartData();
+        } else {
+        }
+      })
+      .catch((err) => {});
   };
   const hendleDelete = () => {
-    setCount(1);
+    const data = { guestId: guestID, productId: item.productId };
+    deleteproductfromCart(data)
+      .then((res) => {
+        if (res.data.success) {
+          fetchCartData();
+        } else {
+        }
+      })
+      .catch((err) => {});
   };
   return (
     <View style={styles.card}>
@@ -135,13 +222,13 @@ const Item = ({ title }) => {
         <Image
           style={styles.image}
           source={{
-            uri: "https://buildoo.co.in/files/productImage/YWo5qHVucUmsLiVBGPsivA.png",
+            uri: item?.image,
           }}
         />
       </View>
       <View style={styles.subcard2}>
         <View style={styles.row1}>
-          <Text style={styles.row1t1}>Product Name</Text>
+          <Text style={styles.row1t1}>{item?.productName}</Text>
           {active ? (
             <AntDesign
               name="heart"
@@ -164,7 +251,7 @@ const Item = ({ title }) => {
         </View>
         <View style={styles.row2}>
           <Text style={styles.row2t1} numberOfLines={1}>
-            Weight : 10 KG
+            Weight : {item.weight} KG
           </Text>
           {/* <Text style={styles.row2t2}>Delivered</Text> */}
         </View>
@@ -183,7 +270,7 @@ const Item = ({ title }) => {
                 color="grey"
               />
             </TouchableOpacity>
-            <Text style={styles.ratingText}>{count}</Text>
+            <Text style={styles.ratingText}>{item?.qty}</Text>
             <TouchableOpacity
               onPress={() => {
                 hendleCountPlus();
@@ -210,7 +297,7 @@ const Item = ({ title }) => {
               />
             </TouchableOpacity>
           </View>
-          <Text style={styles.bold}>₹ 112</Text>
+          <Text style={styles.bold}>₹ {item?.totalprice * item?.qty}</Text>
         </View>
       </View>
     </View>

@@ -1,12 +1,13 @@
 import "react-native-gesture-handler";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from "expo-font";
-import { useCallback, useEffect } from "react";
+import { useCallback } from "react";
 import { PaperProvider } from "react-native-paper";
 import Navigation from "./navigation/Navigation";
 import { TokenProvider } from "./store/TokenContext";
+import { enableScreens } from 'react-native-screens';
 
-
+enableScreens();
 
 export default function App() {
 

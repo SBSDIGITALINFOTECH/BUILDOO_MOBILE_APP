@@ -134,6 +134,14 @@ const styles = StyleSheet.create({
     height: 120,
     backgroundColor: "white",
   },
+  bottomContainerEmpty: {
+    flex: 1,
+    position: "absolute",
+    paddingBottom: 5,
+    paddingTop: 10,
+    height: 120,
+    backgroundColor: COLORS.lightWhite,
+  },
 
   sec: {
     marginHorizontal: SIZES.medium,

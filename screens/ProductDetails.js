@@ -8,17 +8,19 @@ import {
   View,
   useWindowDimensions,
 } from "react-native";
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../styles/ProductDetails.styles";
 import { Ionicons, SimpleLineIcons } from "@expo/vector-icons";
 import { COLORS, SIZES } from "../constants";
 import { Rating } from "react-native-ratings";
 import ProductRow from "../component/common/products/ProductRow";
 import Headings from "../component/common/Headings/Headings";
-import { getProductDetailsbyID } from "../config/API";
-import HTML from 'react-native-render-html';
+import { addToCartApi, getProductDetailsbyID } from "../config/API";
+import HTML from "react-native-render-html";
+import { TokenContext } from "../store/TokenContext";
 
-const ProductDetails = ({route , navigation }) => {
+const ProductDetails = ({ route, navigation }) => {
+  const { token, guestID } = useContext(TokenContext);
   const { width } = useWindowDimensions();
   const [count, setCount] = useState(1);
   const [productDetails, setProductDetails] = useState();
@@ -33,18 +35,34 @@ const ProductDetails = ({route , navigation }) => {
     }
   };
 
+  const handleAddToCart = () => {
+    const data = {
+      guestId: guestID,
+      productId: productId,
+      qty: count,
+    };
+    addToCartApi(data)
+      .then((res) => {
+        if (res.data.success) {
+          navigation.navigate("Cart");
+        } else {
+        }
+      })
+      .catch((err) => {});
+  };
+
   const onLoad = () => {
     getProductDetailsbyID(productId).then((res) => {
       if (res.data.success) {
         setProductDetails(res.data.data[0]);
-      }else{
+      } else {
         setProductDetails({});
       }
     });
   };
-  useEffect(()=>{
+  useEffect(() => {
     onLoad();
-  },[])
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -71,19 +89,23 @@ const ProductDetails = ({route , navigation }) => {
         </View>
         <Image
           source={{
-            uri: productDetails?.image ? productDetails?.image: "https://buildoo.co.in/files/productImage/YWo5qHVucUmsLiVBGPsivA.png",
+            uri: productDetails?.image
           }}
           style={styles.image}
         />
 
         <View style={styles.details}>
           <View style={styles.titleRow}>
-            <View style={{width:'80%'}}>
+            <View style={{ width: "80%" }}>
               <Text style={styles.title}>{productDetails?.im.productName}</Text>
-              <Text style={styles.subtitle}>By {productDetails?.storeName}</Text>
+              <Text style={styles.subtitle}>
+                By {productDetails?.storeName}
+              </Text>
             </View>
             <View style={styles.priceWrapper}>
-              <Text style={styles.price}>₹ {productDetails?.im.specialPrice}</Text>
+              <Text style={styles.price}>
+                ₹ {productDetails?.im.specialPrice}
+              </Text>
             </View>
           </View>
           <View style={styles.reviewContainer}>
@@ -119,7 +141,14 @@ const ProductDetails = ({route , navigation }) => {
           <View style={styles.descriptionWrapper}>
             <Text style={styles.description}>Description</Text>
             <Text style={styles.descText}>
-            <HTML contentWidth={width} source={{ html: productDetails ? productDetails?.im.description : '<p>No description</p>' }} />
+              <HTML
+                contentWidth={width}
+                source={{
+                  html: productDetails
+                    ? productDetails?.im.description
+                    : "<p>No description</p>",
+                }}
+              />
             </Text>
           </View>
           <Headings title="You May Like" />
@@ -129,7 +158,7 @@ const ProductDetails = ({route , navigation }) => {
       <View style={styles.bottomContainer}>
         <TouchableOpacity
           activeOpacity={1}
-          onPress={() => navigation.navigate("Cart")}
+          onPress={() => handleAddToCart()}
           style={styles.bottomBox1}
         >
           <Text style={styles.bottomBoxText1}>Add To Cart</Text>
